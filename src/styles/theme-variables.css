@@ -1,0 +1,154 @@
+/* Theme CSS Variables - Applied by ThemeProvider */
+:root {
+  /* Background colors */
+  --color-bg-primary: #fafafa;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #f5f5f5;
+  --color-bg-inverse: #171717;
+
+  /* Text colors */
+  --color-text-primary: #171717;
+  --color-text-secondary: #525252;
+  --color-text-tertiary: #737373;
+  --color-text-inverse: #fafafa;
+  --color-text-link: #2563eb;
+  --color-text-link-hover: #1d4ed8;
+
+  /* Border colors */
+  --color-border-primary: #e5e5e5;
+  --color-border-secondary: #d4d4d4;
+  --color-border-focus: #3b82f6;
+
+  /* Surface colors */
+  --color-surface-base: #ffffff;
+  --color-surface-hover: #fafafa;
+  --color-surface-active: #f5f5f5;
+  --color-surface-disabled: #e5e5e5;
+
+  /* Status colors */
+  --color-status-success: #16a34a;
+  --color-status-warning: #d97706;
+  --color-status-error: #dc2626;
+  --color-status-info: #2563eb;
+
+  /* Brand colors */
+  --color-brand-primary: #2563eb;
+  --color-brand-primary-hover: #1d4ed8;
+  --color-brand-primary-active: #1e40af;
+  --color-brand-secondary: #475569;
+}
+
+/* Dark mode overrides - automatically applied when data-theme="dark" */
+[data-theme='dark'] {
+  --color-bg-primary: #0a0a0a;
+  --color-bg-secondary: #171717;
+  --color-bg-tertiary: #262626;
+  --color-bg-inverse: #fafafa;
+
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #d4d4d4;
+  --color-text-tertiary: #a3a3a3;
+  --color-text-inverse: #171717;
+  --color-text-link: #60a5fa;
+  --color-text-link-hover: #93c5fd;
+
+  --color-border-primary: #262626;
+  --color-border-secondary: #404040;
+  --color-border-focus: #3b82f6;
+
+  --color-surface-base: #171717;
+  --color-surface-hover: #262626;
+  --color-surface-active: #404040;
+  --color-surface-disabled: #262626;
+
+  --color-status-success: #22c55e;
+  --color-status-warning: #f59e0b;
+  --color-status-error: #ef4444;
+  --color-status-info: #3b82f6;
+
+  --color-brand-primary: #3b82f6;
+  --color-brand-primary-hover: #60a5fa;
+  --color-brand-primary-active: #2563eb;
+  --color-brand-secondary: #64748b;
+}
+
+/* Utility classes for theme colors */
+.bg-primary {
+  background-color: var(--color-bg-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-bg-secondary);
+}
+
+.bg-surface {
+  background-color: var(--color-surface-base);
+}
+
+.bg-brand-primary {
+  background-color: var(--color-brand-primary);
+}
+
+.text-brand-primary {
+  color: var(--color-brand-primary);
+}
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-inverse {
+  color: var(--color-text-inverse);
+}
+
+.border-primary {
+  border-color: var(--color-border-primary);
+}
+
+.border-inverse {
+  border-color: var(--color-text-inverse);
+}
+
+.hover\:bg-surface-hover:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.hover\:bg-white\/10:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hover\:opacity-90:hover {
+  opacity: 0.9;
+}
+
+.focus\:border-focus:focus {
+  border-color: var(--color-border-focus);
+}
+
+/* Status utilities */
+.text-success {
+  color: var(--color-status-success);
+}
+
+.text-warning {
+  color: var(--color-status-warning);
+}
+
+.text-error {
+  color: var(--color-status-error);
+}
+
+.text-info {
+  color: var(--color-status-info);
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: ease-in-out;
+  transition-duration: 200ms;
+}
