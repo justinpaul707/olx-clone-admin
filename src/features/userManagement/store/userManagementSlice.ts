@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { User, UserListParams } from '@app/features/userManagement/types';
+import type { User, UserListParams, UpdateUserInput } from '@app/features/userManagement/types';
 import { UserStatus } from '@app/features/userManagement/types';
 
 interface UserManagementState {
@@ -7,6 +7,11 @@ interface UserManagementState {
   filters: UserListParams;
   selectedUser: User | null;
   isFilterOpen: boolean;
+  profileEdit: {
+    isEditing: boolean;
+    formData: Partial<UpdateUserInput>;
+    avatarPreview: string | null;
+  };
 }
 
 const initialState: UserManagementState = {
@@ -20,6 +25,11 @@ const initialState: UserManagementState = {
   },
   selectedUser: null,
   isFilterOpen: false,
+  profileEdit: {
+    isEditing: false,
+    formData: {},
+    avatarPreview: null,
+  },
 };
 
 const userManagementSlice = createSlice({
@@ -79,6 +89,44 @@ const userManagementSlice = createSlice({
     setFilterPanelOpen(state, action: PayloadAction<boolean>) {
       state.isFilterOpen = action.payload;
     },
+    setProfileEditing(state, action: PayloadAction<boolean>) {
+      state.profileEdit.isEditing = action.payload;
+    },
+    setProfileFormData(state, action: PayloadAction<Partial<UpdateUserInput>>) {
+      state.profileEdit.formData = { ...state.profileEdit.formData, ...action.payload };
+    },
+    updateProfileField(state, action: PayloadAction<{ field: string; value: any }>) {
+      const { field, value } = action.payload;
+      if (field.startsWith('profile.')) {
+        const profileField = field.split('.')[1];
+        state.profileEdit.formData.profile = {
+          ...state.profileEdit.formData.profile,
+          [profileField]: value,
+        };
+      } else {
+        (state.profileEdit.formData as any)[field] = value;
+      }
+    },
+    setAvatarPreview(state, action: PayloadAction<string | null>) {
+      state.profileEdit.avatarPreview = action.payload;
+    },
+    initializeProfileForm(state, action: PayloadAction<User>) {
+      const user = action.payload;
+      state.profileEdit.formData = {
+        id: user.id,
+        fullName: user.profile?.fullName,
+        email: user.email,
+        phone: user.phone,
+        profile: {
+          bio: user.profile?.bio,
+          address: user.profile?.address,
+          avatar: user.profile?.avatar,
+        },
+      };
+    },
+    resetProfileEdit(state) {
+      state.profileEdit = initialState.profileEdit;
+    },
   },
 });
 
@@ -97,6 +145,12 @@ export const {
   setSelectedUser,
   toggleFilterPanel,
   setFilterPanelOpen,
+  setProfileEditing,
+  setProfileFormData,
+  updateProfileField,
+  setAvatarPreview,
+  initializeProfileForm,
+  resetProfileEdit,
 } = userManagementSlice.actions;
 
 export default userManagementSlice.reducer;

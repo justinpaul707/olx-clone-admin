@@ -4,7 +4,7 @@ import type { User } from '@app/features/userManagement/types';
 import { UserStatus } from '@app/features/userManagement/types';
 import { userManagementService } from '@app/features/userManagement/services/userManagementService';
 import { Button } from '@app/components/ui/button';
-import { Edit, Trash2, Power, PowerOff, Eye } from 'lucide-react';
+import { Edit, Trash2, Power, PowerOff, Eye, UserCircle } from 'lucide-react';
 import { DataTable } from '@app/components/ui/data-table';
 import type { ColumnDef } from '@tanstack/react-table';
 import { cn } from '@app/lib/utils';
@@ -130,6 +130,15 @@ export const UsersTable: React.FC<UsersTableProps> = ({
         const user = row.original;
         return (
           <div className="flex items-center justify-end gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(`/users/${user.id}/profile`)}
+              title="View Profile"
+              className="text-brand-primary hover:text-brand-primary/80"
+            >
+              <UserCircle className="h-4 w-4" />
+            </Button>
             <Button
               variant="ghost"
               size="sm"

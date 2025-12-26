@@ -4,7 +4,7 @@ import PrivateAuthProvider from "@app/routes/guards/PrivateAuth";
 import PublicAuthProvider from "@app/routes/guards/PublicAuth";
 import LoginPage from "@app/features/auth/pages/loginPage";
 import DashboardPage from "@app/features/dashboard/pages";
-import { UserManagementPage } from "@app/features/userManagement/pages";
+import { UserManagementPage, UserProfilePage } from "@app/features/userManagement/pages";
 import { PropertyManagementPage, UserPropertiesPage, AddPropertyPage } from "@app/features/propertyManagement/pages";
 
 
@@ -18,6 +18,7 @@ const RoutesHandler = () => {
         <Route element={<PrivateAuthProvider loginStatus={true} />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/user-list" element={<UserManagementPage />} />
+          <Route path="/users/:userId/profile" element={<UserProfilePage />} />
           <Route path="/property-list" element={<PropertyManagementPage />} />
           <Route path="/properties/create" element={<AddPropertyPage />} />
           <Route path="/users/:userId/properties" element={<UserPropertiesPage />} />
