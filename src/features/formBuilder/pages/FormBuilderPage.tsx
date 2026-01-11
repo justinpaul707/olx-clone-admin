@@ -42,7 +42,7 @@ import {
   useSaveAsDraftMutation,
   useAssignFormToCategoryMutation,
 } from '@app/features/formBuilder/api/formBuilderApi';
-import { useGetCategoriesQuery } from '@app/features/settings/api/settingsApi';
+import { useGetCategoriesQuery } from '@app/features/settings/api';
 import { ComponentEditor } from '@app/features/formBuilder/components/ComponentEditor';
 import { ComponentItem } from '@app/features/formBuilder/components/ComponentItem';
 import { Button } from '@app/components/ui/button';
@@ -57,6 +57,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import type { FormComponent } from '@app/features/formBuilder/types';
+import type { Category } from '@app/features/settings/types';
 
 export const FormBuilderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -83,7 +84,8 @@ export const FormBuilderPage: React.FC = () => {
   const { data: form, isLoading: isLoadingForm } = useGetFormQuery(id!, {
     skip: isNewForm,
   });
-  const { data: categories } = useGetCategoriesQuery();
+  const { data: categoriesData } = useGetCategoriesQuery();
+  const categories = categoriesData?.data || [];
   const { data: versions } = useGetFormVersionsQuery(id!, {
     skip: isNewForm,
   });
@@ -425,7 +427,7 @@ export const FormBuilderPage: React.FC = () => {
                     className="w-full px-3 py-2 border border-border-primary rounded-md focus:outline-none focus:ring-2 focus:ring-primary-base"
                   >
                     <option value="">Select a category</option>
-                    {categories?.map((category) => (
+                    {categories.map((category: Category) => (
                       <option key={category.id} value={category.id}>
                         {category.name}
                       </option>

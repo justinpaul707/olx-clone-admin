@@ -64,23 +64,27 @@ export interface Property {
   publishedAt?: string;
 }
 
-export enum PropertyStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-  PENDING = 'PENDING',
-  SOLD = 'SOLD',
-  EXPIRED = 'EXPIRED',
-  REJECTED = 'REJECTED',
-  DRAFT = 'DRAFT',
-}
+export const PropertyStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  PENDING: 'PENDING',
+  SOLD: 'SOLD',
+  EXPIRED: 'EXPIRED',
+  REJECTED: 'REJECTED',
+  DRAFT: 'DRAFT',
+} as const;
 
-export enum PropertyCondition {
-  NEW = 'NEW',
-  LIKE_NEW = 'LIKE_NEW',
-  GOOD = 'GOOD',
-  FAIR = 'FAIR',
-  POOR = 'POOR',
-}
+export type PropertyStatus = typeof PropertyStatus[keyof typeof PropertyStatus];
+
+export const PropertyCondition = {
+  NEW: 'NEW',
+  LIKE_NEW: 'LIKE_NEW',
+  GOOD: 'GOOD',
+  FAIR: 'FAIR',
+  POOR: 'POOR',
+} as const;
+
+export type PropertyCondition = typeof PropertyCondition[keyof typeof PropertyCondition];
 
 export interface CreatePropertyInput {
   title: string;

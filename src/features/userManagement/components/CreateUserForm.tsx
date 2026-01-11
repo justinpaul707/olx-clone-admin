@@ -73,7 +73,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
               />
             </div>
             {field.state.meta.errors.length > 0 && (
-              <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p>
+              <p className="text-sm text-red-600">{String(field.state.meta.errors[0])}</p>
             )}
           </div>
         )}
@@ -101,7 +101,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
               />
             </div>
             {field.state.meta.errors.length > 0 && (
-              <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p>
+              <p className="text-sm text-red-600">{String(field.state.meta.errors[0])}</p>
             )}
           </div>
         )}
@@ -127,7 +127,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
               />
             </div>
             {field.state.meta.errors.length > 0 && (
-              <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p>
+              <p className="text-sm text-red-600">{String(field.state.meta.errors[0])}</p>
             )}
           </div>
         )}
@@ -162,7 +162,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
               </button>
             </div>
             {field.state.meta.errors.length > 0 && (
-              <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p>
+              <p className="text-sm text-red-600">{String(field.state.meta.errors[0])}</p>
             )}
           </div>
         )}
@@ -197,7 +197,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
               </button>
             </div>
             {field.state.meta.errors.length > 0 && (
-              <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p>
+              <p className="text-sm text-red-600">{String(field.state.meta.errors[0])}</p>
             )}
           </div>
         )}
@@ -230,7 +230,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
               ))}
             </select>
             {field.state.meta.errors.length > 0 && (
-              <p className="text-sm text-red-600">{field.state.meta.errors[0]}</p>
+              <p className="text-sm text-red-600">{String(field.state.meta.errors[0])}</p>
             )}
           </div>
         )}

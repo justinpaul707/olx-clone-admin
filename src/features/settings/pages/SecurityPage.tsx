@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@app/components/ui/button';
 import { Input } from '@app/components/ui/input';
-import { Shield, Smartphone, Key, Monitor } from 'lucide-react';
+import { Smartphone, Key, Monitor } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 export const SecurityPage: React.FC = () => {

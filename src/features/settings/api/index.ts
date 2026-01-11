@@ -1,3 +1,2 @@
 export * from './settingsApi';
-export * from './queries';
-export * from './mutations';
+export * from '../categories/api/categoriesApi';

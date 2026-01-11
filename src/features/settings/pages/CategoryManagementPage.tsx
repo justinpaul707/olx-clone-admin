@@ -1,4 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useAppDispatch, useAppSelector, type RootState } from '@app/app/store/store';
+import {
+  setCategoryModalOpen,
+  setSubcategoryModalOpen,
+  toggleCategoryExpand,
+  openCreateCategoryModal,
+  openEditCategoryModal,
+  openCreateSubcategoryModal,
+  openEditSubcategoryModal
+} from '../categories/store/categorySlice';
 import { type Category, type Subcategory } from '@app/features/settings/types';
 import { Button } from '@app/components/ui/button';
 import { Edit, Trash2, Plus, ChevronRight, ChevronDown } from 'lucide-react';
@@ -8,24 +18,27 @@ import {
   useDeleteCategoryMutation,
   useDeleteSubcategoryMutation,
 } from '@app/features/settings/api';
-import { CategoryModal } from '../components/CategoryModal';
-import { SubcategoryModal } from '../components/SubcategoryModal';
+import { CategoryModal } from '../categories/components/CategoryModal';
+import { SubcategoryModal } from '../categories/components/SubcategoryModal';
 import { toast } from 'react-toastify';
 
 export const CategoryManagementPage: React.FC = () => {
-  const { data: categories = [], isLoading } = useGetCategoriesQuery();
+  const dispatch = useAppDispatch();
+  const {
+    isCategoryModalOpen,
+    isSubcategoryModalOpen,
+    selectedCategory,
+    selectedSubcategory,
+    expandedCategories
+  } = useAppSelector((state: RootState) => state.category);
+  
+  const { data: categoriesData, isLoading } = useGetCategoriesQuery();
+  const categories = categoriesData?.data || [];
   const [deleteCategory] = useDeleteCategoryMutation();
   const [deleteSubcategory] = useDeleteSubcategoryMutation();
 
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-  const [isSubcategoryModalOpen, setIsSubcategoryModalOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(undefined);
-  const [selectedSubcategory, setSelectedSubcategory] = useState<Subcategory | undefined>(undefined);
-  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
-
   const handleEditCategory = (category: Category) => {
-    setSelectedCategory(category);
-    setIsCategoryModalOpen(true);
+    dispatch(openEditCategoryModal(category));
   };
 
   const handleDeleteCategory = async (category: Category) => {
@@ -40,19 +53,15 @@ export const CategoryManagementPage: React.FC = () => {
   };
 
   const handleCreateCategory = () => {
-    setSelectedCategory(undefined);
-    setIsCategoryModalOpen(true);
+    dispatch(openCreateCategoryModal());
   };
 
   const handleCreateSubcategory = (category: Category) => {
-    setSelectedCategory(category); // Pass category as context
-    setSelectedSubcategory(undefined);
-    setIsSubcategoryModalOpen(true);
+    dispatch(openCreateSubcategoryModal(category));
   };
 
   const handleEditSubcategory = (subcategory: Subcategory) => {
-    setSelectedSubcategory(subcategory);
-    setIsSubcategoryModalOpen(true);
+    dispatch(openEditSubcategoryModal(subcategory));
   };
 
   const handleDeleteSubcategory = async (subcategory: Subcategory, categoryId: string) => {
@@ -67,10 +76,7 @@ export const CategoryManagementPage: React.FC = () => {
   };
 
   const toggleExpand = (categoryId: string) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [categoryId]: !prev[categoryId]
-    }));
+    dispatch(toggleCategoryExpand(categoryId));
   };
 
   // Render subcategories row
@@ -154,7 +160,7 @@ export const CategoryManagementPage: React.FC = () => {
                         ) : categories.length === 0 ? (
                             <tr><td colSpan={5} className="p-4 text-center">No categories found.</td></tr>
                         ) : (
-                            categories.map(category => (
+                            categories.map((category: Category) => (
                                 <React.Fragment key={category.id}>
                                     <tr className="border-b transition-colors hover:bg-muted/50">
                                         <td className="p-4 align-middle">
@@ -208,13 +214,13 @@ export const CategoryManagementPage: React.FC = () => {
 
       <CategoryModal 
          isOpen={isCategoryModalOpen}
-         onClose={() => setIsCategoryModalOpen(false)}
+         onClose={() => dispatch(setCategoryModalOpen(false))}
          category={selectedCategory}
       />
 
       <SubcategoryModal
          isOpen={isSubcategoryModalOpen}
-         onClose={() => setIsSubcategoryModalOpen(false)}
+         onClose={() => dispatch(setSubcategoryModalOpen(false))}
          subcategory={selectedSubcategory}
          parentCategory={selectedCategory} 
       />

@@ -1,11 +1,16 @@
 export interface Category {
   id: string;
+  _id?: string;
   name: string;
   slug: string;
   description?: string;
   icon?: string;
   isActive: boolean;
+  status?: string;
+  sortOrder?: number;
   order?: number;
+  createdAt?: string;
+  updatedAt?: string;
   subcategories?: Subcategory[];
 }
 
@@ -61,8 +66,29 @@ export interface DeleteSubcategoryInput {
   id: string;
 }
 
+export interface CategoryFilterInput {
+  search?: string;
+  isActive?: boolean;
+  status?: string;
+}
+
+export interface PaginationData<T> {
+  data: T[];
+  totalItems: number;
+  perPage: number;
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  errors?: any;
+}
+
 export interface GetCategoriesResponse {
-  categories: Category[];
+  categories: PaginationData<Category>;
+}
+
+export interface GetCategoryResponse {
+  category: Category;
 }
 
 export interface GetSubcategoriesResponse {

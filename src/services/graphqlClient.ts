@@ -26,7 +26,7 @@ const graphqlClient = {
   ): Promise<T> {
     try {
       if (variables) {
-        return await baseClient.request<T, V>(document, variables);
+        return await baseClient.request(document, variables as any);
       } else {
         return await baseClient.request<T>(document);
       }

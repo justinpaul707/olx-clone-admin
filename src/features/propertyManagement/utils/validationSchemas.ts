@@ -14,7 +14,7 @@ export const createPropertySchema = z.object({
     .min(20, { message: 'Description must be at least 20 characters long.' })
     .max(5000, { message: 'Description cannot exceed 5000 characters.' }),
   price: z
-    .number({ invalid_type_error: 'Price must be a number.' })
+    .number({ message: 'Price must be a number.' })
     .positive({ message: 'Price must be greater than 0.' })
     .max(999999999, { message: 'Price is too high.' }),
   currency: z.string().optional().default('USD'),
@@ -22,10 +22,10 @@ export const createPropertySchema = z.object({
   subcategoryId: z.string().min(1, { message: 'Subcategory is required.' }),
   locationId: z.string().optional(),
   ownerId: z.string().min(1, { message: 'Owner is required.' }),
-  status: z.nativeEnum(PropertyStatus).optional().default(PropertyStatus.PENDING),
-  condition: z.nativeEnum(PropertyCondition).optional(),
+  status: z.enum([PropertyStatus.ACTIVE, PropertyStatus.INACTIVE, PropertyStatus.PENDING, PropertyStatus.SOLD, PropertyStatus.EXPIRED, PropertyStatus.REJECTED, PropertyStatus.DRAFT]).optional().default(PropertyStatus.PENDING),
+  condition: z.enum([PropertyCondition.NEW, PropertyCondition.LIKE_NEW, PropertyCondition.GOOD, PropertyCondition.FAIR, PropertyCondition.POOR]).optional(),
   isNegotiable: z.boolean().optional().default(false),
-  specifications: z.record(z.any()).optional(),
+  specifications: z.record(z.string(), z.any()).optional(),
 });
 
 // Update Property Schema
@@ -41,7 +41,7 @@ export const updatePropertySchema = z.object({
     .max(5000, { message: 'Description cannot exceed 5000 characters.' })
     .optional(),
   price: z
-    .number({ invalid_type_error: 'Price must be a number.' })
+    .number({ message: 'Price must be a number.' })
     .positive({ message: 'Price must be greater than 0.' })
     .max(999999999, { message: 'Price is too high.' })
     .optional(),
@@ -49,17 +49,17 @@ export const updatePropertySchema = z.object({
   categoryId: z.string().optional(),
   subcategoryId: z.string().optional(),
   locationId: z.string().optional(),
-  status: z.nativeEnum(PropertyStatus).optional(),
-  condition: z.nativeEnum(PropertyCondition).optional(),
+  status: z.enum([PropertyStatus.ACTIVE, PropertyStatus.INACTIVE, PropertyStatus.PENDING, PropertyStatus.SOLD, PropertyStatus.EXPIRED, PropertyStatus.REJECTED, PropertyStatus.DRAFT]).optional(),
+  condition: z.enum([PropertyCondition.NEW, PropertyCondition.LIKE_NEW, PropertyCondition.GOOD, PropertyCondition.FAIR, PropertyCondition.POOR]).optional(),
   isNegotiable: z.boolean().optional(),
   isFeatured: z.boolean().optional(),
-  specifications: z.record(z.any()).optional(),
+  specifications: z.record(z.string(), z.any()).optional(),
 });
 
 // Property Filter Schema
 export const propertyFilterSchema = z.object({
   search: z.string().optional(),
-  status: z.nativeEnum(PropertyStatus).optional(),
+  status: z.enum([PropertyStatus.ACTIVE, PropertyStatus.INACTIVE, PropertyStatus.PENDING, PropertyStatus.SOLD, PropertyStatus.EXPIRED, PropertyStatus.REJECTED, PropertyStatus.DRAFT]).optional(),
   categoryId: z.string().optional(),
   subcategoryId: z.string().optional(),
   locationId: z.string().optional(),
@@ -69,7 +69,7 @@ export const propertyFilterSchema = z.object({
   country: z.string().optional(),
   minPrice: z.number().positive().optional(),
   maxPrice: z.number().positive().optional(),
-  condition: z.nativeEnum(PropertyCondition).optional(),
+  condition: z.enum([PropertyCondition.NEW, PropertyCondition.LIKE_NEW, PropertyCondition.GOOD, PropertyCondition.FAIR, PropertyCondition.POOR]).optional(),
   isFeatured: z.boolean().optional(),
   startDate: z.string().optional(),
   endDate: z.string().optional(),

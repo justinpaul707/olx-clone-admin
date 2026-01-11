@@ -29,12 +29,14 @@ export interface User {
   lastLogin?: string;
 }
 
-export enum UserStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-  SUSPENDED = 'SUSPENDED',
-  PENDING = 'PENDING',
-}
+export const UserStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  SUSPENDED: 'SUSPENDED',
+  PENDING: 'PENDING',
+} as const;
+
+export type UserStatus = typeof UserStatus[keyof typeof UserStatus];
 
 export interface CreateUserInput {
   fullName: string;

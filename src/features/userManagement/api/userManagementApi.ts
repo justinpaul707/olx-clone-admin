@@ -56,7 +56,7 @@ export const userManagementApi = createApi({
         variables: { userId },
       }),
       transformResponse: (response: GetUserDetailsQueryResponse) => response.userDetails,
-      providesTags: (result, error, userId) => [{ type: 'UserDetails', id: userId }],
+      providesTags: (_result, _error, userId) => [{ type: 'UserDetails', id: userId }],
     }),
 
     getUserPropertyCount: builder.query<any, string>({
@@ -64,7 +64,7 @@ export const userManagementApi = createApi({
         document: GET_USER_PROPERTY_COUNT,
         variables: { userId },
       }),
-      providesTags: (result, error, userId) => [{ type: 'UserDetails', id: userId }],
+      providesTags: (_result, _error, userId) => [{ type: 'UserDetails', id: userId }],
     }),
 
     getRoles: builder.query<UserRole[], void>({
@@ -97,7 +97,7 @@ export const userManagementApi = createApi({
         variables: userData,
       }),
       transformResponse: (response: UpdateUserMutationResponse) => response.updateUser,
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Users', id },
         { type: 'UserDetails', id },
         { type: 'Users', id: 'LIST' },
@@ -113,7 +113,7 @@ export const userManagementApi = createApi({
         variables: { id },
       }),
       transformResponse: (response: DeleteUserMutationResponse) => response.deleteUser,
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Users', id },
         { type: 'UserDetails', id },
         { type: 'Users', id: 'LIST' },
@@ -130,7 +130,7 @@ export const userManagementApi = createApi({
       }),
       transformResponse: (response: ChangeUserStatusMutationResponse) =>
         response.changeUserStatus,
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Users', id },
         { type: 'UserDetails', id },
         { type: 'Users', id: 'LIST' },

@@ -36,7 +36,7 @@ export const createUserSchema = z.object({
       { message: 'Invalid phone number format.' }
     ),
   roleId: z.string().min(1, { message: 'Role is required.' }),
-  status: z.nativeEnum(UserStatus).optional().default(UserStatus.ACTIVE),
+  status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE, UserStatus.SUSPENDED, UserStatus.PENDING]),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Passwords do not match.',
   path: ['confirmPassword'],
@@ -67,15 +67,15 @@ export const updateUserSchema = z.object({
     )
     .optional(),
   roleId: z.string().optional(),
-  status: z.nativeEnum(UserStatus).optional(),
+  status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE, UserStatus.SUSPENDED, UserStatus.PENDING]).optional(),
   address: z.string().max(200, { message: 'Address cannot exceed 200 characters.' }).optional(),
   bio: z.string().max(500, { message: 'Bio cannot exceed 500 characters.' }).optional(),
 });
 
 // Change Status Schema
 export const changeStatusSchema = z.object({
-  status: z.nativeEnum(UserStatus, {
-    errorMap: () => ({ message: 'Please select a valid status.' }),
+  status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE, UserStatus.SUSPENDED, UserStatus.PENDING], {
+    message: 'Please select a valid status.',
   }),
 });
 
@@ -101,7 +101,7 @@ export const resetPasswordSchema = z
 // User Filter Schema
 export const userFilterSchema = z.object({
   search: z.string().optional(),
-  status: z.nativeEnum(UserStatus).optional(),
+  status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE, UserStatus.SUSPENDED, UserStatus.PENDING]).optional(),
   roleId: z.string().optional(),
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).optional(),

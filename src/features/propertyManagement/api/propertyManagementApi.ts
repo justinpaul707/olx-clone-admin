@@ -63,7 +63,7 @@ export const propertyManagementApi = createApi({
         variables: { propertyId },
       }),
       transformResponse: (response: GetPropertyDetailsQueryResponse) => response.propertyDetails,
-      providesTags: (result, error, propertyId) => [{ type: 'PropertyDetails', id: propertyId }],
+      providesTags: (_result, _error, propertyId) => [{ type: 'PropertyDetails', id: propertyId }],
     }),
 
     getPropertyStats: builder.query<GetPropertyStatsQueryResponse['propertyStats'], void>({
@@ -88,7 +88,7 @@ export const propertyManagementApi = createApi({
         variables: { categoryId },
       }),
       transformResponse: (response: GetSubcategoriesQueryResponse) => response.subcategories,
-      providesTags: (result, error, categoryId) => [{ type: 'Subcategories', id: categoryId }],
+      providesTags: (_result, _error, categoryId) => [{ type: 'Subcategories', id: categoryId }],
     }),
 
     getAllSubcategories: builder.query<PropertySubcategory[], void>({
@@ -124,7 +124,7 @@ export const propertyManagementApi = createApi({
         variables: propertyData,
       }),
       transformResponse: (response: UpdatePropertyMutationResponse) => response.updateProperty,
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Properties', id: 'LIST' },
         { type: 'Properties', id },
         { type: 'PropertyDetails', id },
@@ -141,7 +141,7 @@ export const propertyManagementApi = createApi({
         variables: input,
       }),
       transformResponse: (response: DeletePropertyMutationResponse) => response.deleteProperty,
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Properties', id: 'LIST' },
         { type: 'Properties', id },
         { type: 'PropertyDetails', id },
@@ -159,7 +159,7 @@ export const propertyManagementApi = createApi({
       }),
       transformResponse: (response: ChangePropertyStatusMutationResponse) =>
         response.changePropertyStatus,
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Properties', id: 'LIST' },
         { type: 'Properties', id },
         { type: 'PropertyDetails', id },
@@ -188,7 +188,7 @@ export const propertyManagementApi = createApi({
         document: TOGGLE_FEATURED,
         variables: input,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: 'Properties', id: 'LIST' },
         { type: 'Properties', id },
         { type: 'PropertyDetails', id },
