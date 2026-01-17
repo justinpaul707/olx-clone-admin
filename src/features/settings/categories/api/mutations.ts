@@ -1,41 +1,25 @@
 import { gql } from 'graphql-request';
 
 export const CREATE_CATEGORY = gql`
-  mutation CreateCategory($name: String!, $slug: String, $description: String, $icon: String, $isActive: Boolean) {
-    createCategory(name: $name, slug: $slug, description: $description, icon: $icon, isActive: $isActive) {
+  mutation CreateCategory($input: CategoryInput!) {
+    createCategory(input: $input) {
       success
-      message
-      data {
-        category {
-          id
-          name
-          slug
-          description
-          icon
-          isActive
-        }
-      }
       errors
     }
   }
 `;
 
 export const UPDATE_CATEGORY = gql`
-  mutation UpdateCategory($id: ID!, $name: String, $slug: String, $description: String, $icon: String, $isActive: Boolean) {
-    updateCategory(id: $id, name: $name, slug: $slug, description: $description, icon: $icon, isActive: $isActive) {
+  mutation UpdateCategory($id: ID!, $input: CategoryUpdateInput!) {
+    updateCategory(id: $id, input: $input) {
       success
       message
-      data {
-        category {
-          id
-          name
-          slug
-          description
-          icon
-          isActive
-        }
-      }
       errors
+      data {
+        _id
+        name
+        imageUrl
+      }
     }
   }
 `;

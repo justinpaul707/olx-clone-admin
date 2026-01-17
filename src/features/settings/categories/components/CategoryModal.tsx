@@ -22,16 +22,17 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, c
       name: category?.name || '',
       slug: category?.slug || '',
       description: category?.description || '',
-      icon: category?.icon || '',
+      imageFile: null as File | null,
       isActive: category ? category.isActive : true,
     },
     onSubmit: async ({ value }) => {
       try {
+        const { slug, ...inputData } = value;
         if (category) {
-          await updateCategory({ ...value, id: category.id }).unwrap();
+          await updateCategory({ ...inputData, id: category.id }).unwrap();
           toast.success('Category updated successfully');
         } else {
-          await createCategory(value).unwrap();
+          await createCategory(inputData).unwrap();
           toast.success('Category created successfully');
         }
         onClose();
@@ -50,7 +51,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, c
           <X className="h-5 w-5" />
         </button>
         <h2 className="text-xl font-bold mb-4">{category ? 'Edit Category' : 'Add Category'}</h2>
-        
+
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -99,17 +100,29 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, c
           />
 
           <form.Field
-            name="icon"
+            name="imageFile"
             children={(field) => (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Icon (Emoji)</label>
-                <Input
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="e.g. 📱"
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                <div className="flex items-center gap-4">
+                  {category?.imageUrl && (
+                    <img
+                      src={category.imageUrl}
+                      alt={category.name}
+                      className="h-12 w-12 rounded object-cover border border-gray-200"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      field.handleChange(file);
+                    }}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">Upload an image for the category.</p>
               </div>
             )}
           />

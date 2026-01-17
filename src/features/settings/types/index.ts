@@ -4,7 +4,7 @@ export interface Category {
   name: string;
   slug: string;
   description?: string;
-  icon?: string;
+  imageUrl?: string;
   isActive: boolean;
   status?: string;
   sortOrder?: number;
@@ -28,7 +28,7 @@ export interface CreateCategoryInput {
   name: string;
   slug?: string;
   description?: string;
-  icon?: string;
+  imageFile?: File | null;
   isActive?: boolean;
 }
 
@@ -37,7 +37,7 @@ export interface UpdateCategoryInput {
   name?: string;
   slug?: string;
   description?: string;
-  icon?: string;
+  imageFile?: File | null;
   isActive?: boolean;
 }
 
@@ -97,7 +97,7 @@ export interface GetSubcategoriesResponse {
 
 export interface CategoryMutationResponse {
   success: boolean;
-  message: string;
+  message?: string;
   category?: Category;
   errors?: string[];
 }

@@ -82,15 +82,17 @@ export const categoriesApi = settingsApi.injectEndpoints({
     createCategory: builder.mutation<CategoryMutationResponse, CreateCategoryInput>({
       query: (input) => ({
         document: CREATE_CATEGORY,
-        variables: input,
+        variables: { input },
+        isUpload: true,
       }),
       invalidatesTags: ['Categories'],
     }),
 
     updateCategory: builder.mutation<CategoryMutationResponse, UpdateCategoryInput>({
-      query: (input) => ({
+      query: ({ id, ...input }) => ({
         document: UPDATE_CATEGORY,
-        variables: input,
+        variables: { id, input },
+        isUpload: true,
       }),
       invalidatesTags: ['Categories'],
     }),

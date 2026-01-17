@@ -2,7 +2,7 @@ import { authService } from "@app/features/auth/services/authService";
 import axios, { AxiosError, type AxiosResponse } from "axios";
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.SERVER_API_URL || "http://localhost:4000/api",
+  baseURL: import.meta.env.VITE_SERVER_API_URL || "",
   withCredentials: true,
   timeout: 20000,
 });
@@ -55,22 +55,22 @@ export async function request<T = unknown>(
 }
 
 export const api = {
-  get: function<T = unknown>(url: string, isAuth = false, headers?: Record<string, string>) {
+  get: function <T = unknown>(url: string, isAuth = false, headers?: Record<string, string>) {
     return request<T>("get", url, undefined, headers, isAuth);
   },
-  post: function<T = unknown>(url: string, data?: unknown, isAuth = false, headers?: Record<string, string>) {
+  post: function <T = unknown>(url: string, data?: unknown, isAuth = false, headers?: Record<string, string>) {
     return request<T>("post", url, data, headers, isAuth);
   },
-  put: function<T = unknown>(url: string, data?: unknown, isAuth = false, headers?: Record<string, string>) {
+  put: function <T = unknown>(url: string, data?: unknown, isAuth = false, headers?: Record<string, string>) {
     return request<T>("put", url, data, headers, isAuth);
   },
-  patch: function<T = unknown>(url: string, data?: unknown, isAuth = false, headers?: Record<string, string>) {
+  patch: function <T = unknown>(url: string, data?: unknown, isAuth = false, headers?: Record<string, string>) {
     return request<T>("patch", url, data, headers, isAuth);
   },
-  delete: function<T = unknown>(url: string, data?: unknown, isAuth = false, headers?: Record<string, string>) {
+  delete: function <T = unknown>(url: string, data?: unknown, isAuth = false, headers?: Record<string, string>) {
     return request<T>("delete", url, data, headers, isAuth);
   },
-  postFormData: function<T = unknown>(url: string, formData: FormData, isAuth = false, headers?: Record<string, string>) {
+  postFormData: function <T = unknown>(url: string, formData: FormData, isAuth = false, headers?: Record<string, string>) {
     return request<T>("post", url, formData, { ...headers, "Content-Type": "multipart/form-data" }, isAuth);
   },
 };

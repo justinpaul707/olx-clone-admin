@@ -8,7 +8,7 @@ export const GET_CATEGORIES = gql`
         name
         slug
         description
-        icon
+        imageUrl
         isActive
         status
         sortOrder
@@ -34,7 +34,7 @@ export const GET_CATEGORY = gql`
       name
       slug
       description
-      icon
+      imageUrl
       isActive    
     }
   }
