@@ -20,6 +20,8 @@ import {
 } from '@app/features/settings/api';
 import { CategoryModal } from '../categories/components/CategoryModal';
 import { SubcategoryModal } from '../categories/components/SubcategoryModal';
+import { AlertModal } from '@app/components/containers/AlertModal/AlertModal';
+import { useAlertModal } from '@app/hooks/useAlertModal';
 import { toast } from 'react-toastify';
 
 export const CategoryManagementPage: React.FC = () => {
@@ -40,16 +42,47 @@ export const CategoryManagementPage: React.FC = () => {
     const handleEditCategory = (category: Category) => {
         dispatch(openEditCategoryModal(category));
     };
+    const alert = useAlertModal();
+    const handleDeleteCategory = (category: Category) => {
+        alert.show({
+            title: 'Delete Category',
+            message: `Are you sure you want to delete category "${category.name}"?`,
+            variant: 'danger',
+            confirmText: 'Delete',
+            onConfirm: async () => {
+                alert.setLoading(true);
+                try {
+                    await deleteCategory({ id: category.id }).unwrap();
+                    toast.success('Category deleted successfully');
+                    alert.hide();
+                } catch (error: any) {
+                    toast.error(error?.message || 'Failed to delete category');
+                } finally {
+                    alert.setLoading(false);
+                }
+            },
+        });
+    };
 
-    const handleDeleteCategory = async (category: Category) => {
-        if (window.confirm(`Are you sure you want to delete category "${category.name}"?`)) {
-            try {
-                await deleteCategory({ id: category.id }).unwrap();
-                toast.success('Category deleted successfully');
-            } catch (error: any) {
-                toast.error(error?.message || 'Failed to delete category');
-            }
-        }
+    const handleDeleteSubcategory = (subcategory: Subcategory, categoryId: string) => {
+        alert.show({
+            title: 'Delete Subcategory',
+            message: `Are you sure you want to delete subcategory "${subcategory.name}"? This action cannot be undone.`,
+            variant: 'danger',
+            confirmText: 'Delete',
+            onConfirm: async () => {
+                alert.setLoading(true);
+                try {
+                    await deleteSubcategory({ id: subcategory.id, categoryId }).unwrap();
+                    toast.success('Subcategory deleted successfully');
+                    alert.hide();
+                } catch (error: any) {
+                    toast.error(error?.message || 'Failed to delete subcategory');
+                } finally {
+                    alert.setLoading(false);
+                }
+            },
+        });
     };
 
     const handleCreateCategory = () => {
@@ -62,17 +95,6 @@ export const CategoryManagementPage: React.FC = () => {
 
     const handleEditSubcategory = (subcategory: Subcategory) => {
         dispatch(openEditSubcategoryModal(subcategory));
-    };
-
-    const handleDeleteSubcategory = async (subcategory: Subcategory, categoryId: string) => {
-        if (window.confirm(`Are you sure you want to delete subcategory "${subcategory.name}"?`)) {
-            try {
-                await deleteSubcategory({ id: subcategory.id, categoryId }).unwrap();
-                toast.success('Subcategory deleted successfully');
-            } catch (error: any) {
-                toast.error(error?.message || 'Failed to delete subcategory');
-            }
-        }
     };
 
     const toggleExpand = (categoryId: string) => {
@@ -230,6 +252,17 @@ export const CategoryManagementPage: React.FC = () => {
                 onClose={() => dispatch(setSubcategoryModalOpen(false))}
                 subcategory={selectedSubcategory}
                 parentCategory={selectedCategory}
+            />
+
+            <AlertModal
+                isOpen={alert.isOpen}
+                onClose={alert.hide}
+                onConfirm={alert.onConfirm}
+                title={alert.title}
+                message={alert.message}
+                variant={alert.variant}
+                confirmText={alert.confirmText}
+                isLoading={alert.isLoading}
             />
         </div>
     );
