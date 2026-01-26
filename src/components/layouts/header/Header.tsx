@@ -13,12 +13,13 @@ const navigationConfig = [
     icon: ShoppingCart,
     path: '/property-list',
     hasDropdown: true,
+    isNavLink: true,
     items: [
       {
         label: 'Property List',
         icon: List,
         path: '/property-list',
-        isButton: false,
+        isNavLink: true,
       },
     ],
   },
@@ -28,6 +29,7 @@ const navigationConfig = [
     icon: FileText,
     path: '/reports',
     hasDropdown: false,
+    isNavLink: true,
   },
   {
     id: 'settings',
@@ -35,42 +37,43 @@ const navigationConfig = [
     icon: Settings,
     path: '/settings',
     hasDropdown: true,
+    isNavLink: false,
     items: [
       {
         label: 'User Management',
         icon: Users,
         path: '/user-list',
-        isButton: false,
+        isNavLink: true,
       },
       {
         label: 'Role Management',
         icon: User,
         path: '/settings/roles',
-        isButton: false,
+        isNavLink: true,
       },
       {
-        label: 'Categories',
+        label: 'Category Management',
         icon: List,
         path: '/settings/categories',
-        isButton: false,
+        isNavLink: true,
       },
       {
         label: 'Form Builder',
         icon: FileText,
         path: '/settings/forms',
-        isButton: false,
+        isNavLink: true,
       },
       {
         label: 'Audit Logs',
         icon: List,
         path: '/settings/audit-logs',
-        isButton: false,
+        isNavLink: true,
       },
       {
         label: 'Security',
         icon: Settings,
         path: '/settings/security',
-        isButton: false,
+        isNavLink: true,
       },
     ],
   },
@@ -80,6 +83,7 @@ const navigationConfig = [
     icon: User,
     path: '/my-profile',
     hasDropdown: false,
+    isNavLink: true,
   },
 ];
 
@@ -94,7 +98,7 @@ const Header = () => {
     <>
       <header className="fixed top-0 left-0 w-full z-[1400] shadow-lg bg-brand-primary text-inverse">
         <div className="flex items-center px-4 min-h-16">
-          <button 
+          <button
             className="flex items-center gap-1 bg-transparent border-none text-inverse p-2 cursor-pointer rounded-md transition-colors hover:bg-white/10"
             aria-label="menu"
           >
@@ -120,16 +124,27 @@ const Header = () => {
                     onMouseEnter={() => handleDropdownOpen(navItem.id)}
                     onMouseLeave={handleDropdownClose}
                   >
-                    <Link
-                      to={navItem.path!}
-                      className="flex items-center gap-1 bg-transparent border-none text-inverse px-4 py-2 cursor-pointer rounded-md transition-colors min-w-[120px] no-underline hover:bg-white/10"
-                      aria-haspopup="true"
-                      aria-expanded={isOpen}
-                    >
-                      <Icon className="w-5 h-5" />
-                      <span>{navItem.label}</span>
-                    </Link>
-                    
+                    {!navItem.isNavLink ? (
+                      <button
+                        className="flex items-center gap-1 bg-transparent border-none text-inverse px-4 py-2 cursor-pointer rounded-md transition-colors min-w-[120px] hover:bg-white/10 font-inherit"
+                        aria-haspopup="true"
+                        aria-expanded={isOpen}
+                      >
+                        <Icon className="w-5 h-5" />
+                        <span>{navItem.label}</span>
+                      </button>
+                    ) : (
+                      <Link
+                        to={navItem.path!}
+                        className="flex items-center gap-1 bg-transparent border-none text-inverse px-4 py-2 cursor-pointer rounded-md transition-colors min-w-[120px] no-underline hover:bg-white/10"
+                        aria-haspopup="true"
+                        aria-expanded={isOpen}
+                      >
+                        <Icon className="w-5 h-5" />
+                        <span>{navItem.label}</span>
+                      </Link>
+                    )}
+
                     <div
                       className={cn(
                         "absolute top-full pt-2 left-0 min-w-[200px]",
@@ -139,37 +154,49 @@ const Header = () => {
                       onMouseLeave={handleDropdownClose}
                     >
                       <div className="shadow-lg rounded-md overflow-hidden bg-surface text-primary">
-                      {navItem.items.map((item, index) => {
-                        const ItemIcon = item.icon;
-                        
-                        if (item.isButton) {
+                        {navItem.items.map((item, index) => {
+                          const ItemIcon = item.icon;
+
+                          if (!item.isNavLink) {
+                            return (
+                              <button
+                                key={index}
+                                className="w-full flex items-center gap-2 px-4 py-2 cursor-pointer transition-colors text-left border-none bg-transparent text-primary hover:bg-surface-hover"
+                                onClick={handleDropdownClose}
+                              >
+                                <ItemIcon className="w-5 h-5" />
+                                <span>{item.label}</span>
+                              </button>
+                            );
+                          }
+
                           return (
-                            <button
+                            <Link
                               key={index}
-                              className="w-full flex items-center gap-2 px-4 py-2 cursor-pointer transition-colors text-left border-none bg-transparent text-primary hover:bg-surface-hover"
+                              to={item.path}
+                              className="flex items-center gap-2 px-4 py-2 cursor-pointer transition-colors no-underline text-primary hover:bg-surface-hover"
                               onClick={handleDropdownClose}
                             >
                               <ItemIcon className="w-5 h-5" />
                               <span>{item.label}</span>
-                            </button>
+                            </Link>
                           );
-                        }
-
-                        return (
-                          <Link
-                            key={index}
-                            to={item.path}
-                            className="flex items-center gap-2 px-4 py-2 cursor-pointer transition-colors no-underline text-primary hover:bg-surface-hover"
-                            onClick={handleDropdownClose}
-                          >
-                            <ItemIcon className="w-5 h-5" />
-                            <span>{item.label}</span>
-                          </Link>
-                        );
-                      })}
+                        })}
                       </div>
                     </div>
                   </div>
+                );
+              }
+
+              if (!navItem.isNavLink) {
+                return (
+                  <button
+                    key={navItem.id}
+                    className="flex items-center gap-1 bg-transparent border-none text-inverse px-4 py-2 cursor-pointer rounded-md transition-colors hover:bg-white/10 font-inherit"
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span>{navItem.label}</span>
+                  </button>
                 );
               }
 
@@ -193,15 +220,15 @@ const Header = () => {
             {!authService.isAuthenticated() && (
               <>
                 <Link to="/login">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="border-inverse text-inverse bg-transparent hover:bg-white/10"
                   >
                     Login
                   </Button>
                 </Link>
                 <Link to="/auth/signup">
-                  <Button 
+                  <Button
                     className="bg-surface text-primary hover:opacity-90"
                   >
                     Sign Up
